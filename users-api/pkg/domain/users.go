@@ -18,7 +18,8 @@ type User struct {
 
 // UserRepository is the interface that wraps the basic CRUD functions
 type UserRepository interface {
-	FindById(id string) (*User, lib.RestErr)
+	FindById(id int64) (*User, lib.RestErr)
+
 	//Create(user *UserResponse) (*UserResponse, lib.RestErr)
 	//Search(name string) (*UserResponse, lib.RestErr)
 	//FindAll() ([]*UserResponse, lib.RestErr)

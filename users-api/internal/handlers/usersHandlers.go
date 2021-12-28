@@ -12,9 +12,18 @@ type UserHandlers struct {
 
 // GetById returns a user by id
 func (u UserHandlers) GetById(c *gin.Context) {
-	c.JSON(http.StatusNotImplemented, gin.H{
-		"message": "get by id",
-	})
+	id, err := getUserId(c.Param("id"))
+	if err != nil {
+		c.JSON(err.AsStatus(), err)
+		return
+	}
+	user, err := u.Service.GetById(id)
+	if err != nil {
+		c.JSON(err.AsStatus(), err)
+		return
+	}
+
+	c.JSON(http.StatusOK, user)
 }
 
 // GetAll returns all users, paginated
