@@ -1,12 +1,13 @@
 package app
 
 import (
+	"github.com/ashtishad/bookstore/lib"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"time"
 )
 
-var r = gin.Default()
+var r = gin.New()
 
 func Start() {
 	srv := &http.Server{
@@ -19,11 +20,15 @@ func Start() {
 	}
 	getRouteMappings()
 
+	r.Use(gin.LoggerWithFormatter(lib.Logger))
+
+	r.Use(gin.CustomRecovery(lib.Recover))
+
 	go func() {
 		if err := srv.ListenAndServe(); err != nil {
 			return
 		}
 	}()
 
-	gracefulShutdown(srv)
+	lib.GracefulShutdown(srv)
 }
