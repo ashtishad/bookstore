@@ -36,6 +36,9 @@ func GetDbClient() *sql.DB {
 		panic(err)
 	}
 
+	if err = db.Ping(); err != nil {
+		panic(err)
+	}
 	log.Printf("successfully connected to database %s", dsn.String())
 
 	db.SetConnMaxLifetime(time.Minute * 3)
