@@ -1,22 +1,32 @@
 # Users Microservice API
 
-#### Routes
+### Routes
 
-    * GetUserById    GET    /users/:id
-    * SearchUsers    GET    /users/search
-    * CreateUser     POST   /users
-    * UpdateUser     PUT    /users/:id
-    * DeleteUser     DELETE /users/:id
+    * GetUserById           GET     /users/:id
+    * SearchUsers           GET     /users/search
+    * CreateUser            POST    /users
+    * UpdateUser            PUT     /users/:id
+    * DeleteUser            DELETE  /users/:id
+    * GetAll(paginated)     GET     /users
 
-#### Design Decisions
+### Design Decisions
 
     * Hexagonal Architecture.
-    * REST Api.
+    * Domain Driven Design.
+    * REST API.
+    * Postgresql Database.
     * Dependency Injection.
     * Structured Error Library.
     * Concurrent Server with Graceful Shutdown.
 
-#### Libraries/Tools/Frameworks
+### Libraries/Tools/Frameworks
 
-    * Gin
-    * Go Standard Library
+    * Gin.
+    * Go Standard Library.
+    * Postgresql.
+    * Docker.
+
+### Data Exchange Format
+
+    1. JSON (REST)
+    2. CSV  (Database Bulk Insert)
