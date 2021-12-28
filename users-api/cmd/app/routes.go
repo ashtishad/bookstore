@@ -4,11 +4,12 @@ import (
 	"github.com/ashtishad/bookstore/users-api/internal/handlers"
 )
 
-func getRouteMappings() {
-	r.GET("/users", handlers.GetAll)
-	r.GET("/users/:id", handlers.GetById)
-	r.GET("/users/search", handlers.Search)
-	r.POST("/users", handlers.Create)
-	r.PUT("/users/:id", handlers.Update)
-	r.DELETE("/users/:id", handlers.Delete)
+func getRouteMappings(uh handlers.UserHandlers) {
+	r.GET("/users/:id", uh.GetById)
+
+	r.GET("/users", uh.GetAll)
+	r.GET("/users/search", uh.Search)
+	r.POST("/users", uh.Create)
+	r.PUT("/users/:id", uh.Update)
+	r.DELETE("/users/:id", uh.Delete)
 }
