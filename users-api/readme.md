@@ -29,4 +29,15 @@
 ### Data Exchange Format
 
     1. JSON (REST)
-    2. CSV  (Database Bulk Insert)
+    2. CSV  (Database Bulk Import)
+
+### Data Model
+    users:
+        * id            bigserial,pk
+        * name          varchar
+        * gender        varchar
+        * dateOfBirth   date
+        * email         varchar
+        * city          varchar
+        * created_at    varchar
+        * status        smallint
