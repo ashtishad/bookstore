@@ -77,6 +77,14 @@ func NewUnauthorizedError(message string) RestErr {
 	}
 }
 
+func NewUnexpectedError(message string) RestErr {
+	return restErr{
+		ErrMessage: message,
+		ErrStatus:  http.StatusInternalServerError,
+		ErrError:   "unexpected error",
+	}
+}
+
 func NewInternalServerError(message string, err error) RestErr {
 	result := restErr{
 		ErrMessage: message,
