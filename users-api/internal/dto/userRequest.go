@@ -8,8 +8,14 @@ type UserRequest struct {
 	City        string `json:"city" db:"city" binding:"required"`
 }
 
-// TODO: Add validation for UserRequest
+type UserUpdateRequest struct {
+	Id     int64  `json:"id" db:"id" binding:"required"`
+	Name   string `json:"name" db:"name" binding:"required"`
+	Email  string `json:"email" db:"email" binding:"required,email"`
+	City   string `json:"city" db:"city" binding:"required"`
+	Status int8   `json:"status" db:"status" binding:"required"`
+}
 
-func (u *UserRequest) Validate() error {
-	return nil
+func (uu *UserUpdateRequest) SetId(id int64) {
+	uu.Id = id
 }

@@ -21,11 +21,25 @@ type User struct {
 type UserRepository interface {
 	FindById(id int64) (*User, lib.RestErr)
 	Save(User) (*User, lib.RestErr)
+	Update(User) (*User, lib.RestErr)
 
 	//Search(string) (*User, lib.RestErr)
 	//FindAll() ([]*User, lib.RestErr)
-	//Update(bool, User) (*User, lib.RestErr)
 	//Delete(id int64) lib.RestErr
+}
+
+// CREATE : User -> DTO , vice versa transformation
+
+func NewUser(req dto.UserRequest) User {
+	return User{
+		Name:        req.Name,
+		Gender:      req.Gender,
+		DateOfBirth: req.DateOfBirth,
+		Email:       req.Email,
+		City:        req.City,
+		DateCreated: time.Now().Format(lib.DbDateLayout),
+		Status:      1,
+	}
 }
 
 func (u User) ToUserRespDTO() dto.UserResponse {
@@ -41,14 +55,13 @@ func (u User) ToUserRespDTO() dto.UserResponse {
 	}
 }
 
-func NewUser(req dto.UserRequest) User {
+// NewUpdateUser has only fields that are updatable
+func NewUpdateUser(req dto.UserUpdateRequest) User {
 	return User{
-		Name:        req.Name,
-		Gender:      req.Gender,
-		DateOfBirth: req.DateOfBirth,
-		Email:       req.Email,
-		City:        req.City,
-		DateCreated: time.Now().Format(lib.DbDateLayout),
-		Status:      1,
+		Id:     req.Id,
+		Name:   req.Name,
+		Email:  req.Email,
+		City:   req.City,
+		Status: req.Status,
 	}
 }

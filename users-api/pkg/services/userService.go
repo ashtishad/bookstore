@@ -10,6 +10,7 @@ import (
 type UserService interface {
 	GetById(id int64) (*dto.UserResponse, lib.RestErr)
 	Create(req dto.UserRequest) (*dto.UserResponse, lib.RestErr)
+	Update(req dto.UserUpdateRequest) (*dto.UserResponse, lib.RestErr)
 }
 
 type DefaultUserService struct {
@@ -40,6 +41,19 @@ func (s DefaultUserService) Create(req dto.UserRequest) (*dto.UserResponse, lib.
 	u := domain.NewUser(req)
 
 	usr, err := s.repo.Save(u)
+	if err != nil {
+		return nil, err
+	}
+
+	resp := usr.ToUserRespDTO()
+
+	return &resp, nil
+}
+
+func (s DefaultUserService) Update(req dto.UserUpdateRequest) (*dto.UserResponse, lib.RestErr) {
+	u := domain.NewUpdateUser(req)
+
+	usr, err := s.repo.Update(u)
 	if err != nil {
 		return nil, err
 	}

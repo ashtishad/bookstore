@@ -46,11 +46,30 @@ func (u UserHandlers) Create(c *gin.Context) {
 	c.JSON(http.StatusCreated, result)
 }
 
-// TODO: Update an existing user
+// Update an existing user
 func (u UserHandlers) Update(c *gin.Context) {
-	c.JSON(http.StatusNotImplemented, gin.H{
-		"message": "update",
-	})
+	id, err := getUserId(c.Param("id"))
+	if err != nil {
+		c.JSON(err.AsStatus(), err)
+		return
+	}
+
+	var req dto.UserUpdateRequest
+	req.SetId(id)
+
+	if err := c.ShouldBindJSON(&req); err != nil {
+		restErr := lib.NewBadRequestError("invalid json body")
+		c.JSON(restErr.AsStatus(), restErr)
+		return
+	}
+
+	result, saveErr := u.Service.Update(req)
+
+	if saveErr != nil {
+		c.JSON(saveErr.AsStatus(), saveErr)
+		return
+	}
+	c.JSON(http.StatusCreated, result)
 }
 
 // TODO: Delete an existing user

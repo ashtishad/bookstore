@@ -7,8 +7,10 @@ import (
 )
 
 const (
-	sqlGetUser    = `SELECT id, name, gender,date_of_birth, email,city, date_created, status FROM users WHERE id=$1;`
-	sqlInsertUser = `INSERT INTO users(name, gender, date_of_birth, email, city) VALUES($1, $2, $3, $4, $5) RETURNING id;`
+	sqlGetUser         = `SELECT id, name, gender,date_of_birth, email,city, date_created, status FROM users WHERE id=$1;`
+	sqlInsertUser      = `INSERT INTO users(name, gender, date_of_birth, email, city) VALUES($1, $2, $3, $4, $5) RETURNING id;`
+	sqlUpdateUser      = `UPDATE users SET name=$1, email=$2, city=$3 ,status=$4 WHERE id=$5;`
+	sqlCheckUserExists = `SELECT id FROM users WHERE id=$1;`
 )
 
 type UserRepoDb struct {
@@ -53,4 +55,34 @@ func (d UserRepoDb) Save(u User) (*User, lib.RestErr) {
 
 	u.Id = id
 	return &u, nil
+}
+
+// Update updatable fields of a user
+func (d UserRepoDb) Update(u User) (*User, lib.RestErr) {
+	// check user exists
+	if check, err := d.checkUserExists(u.Id); check == false {
+		return nil, lib.NewInternalServerError("user not found in database.", err)
+	}
+
+	_, err := d.db.Exec(sqlUpdateUser, u.Name, u.Email, u.City, u.Status, u.Id)
+	if err != nil {
+		return nil, lib.NewInternalServerError("Could not update user : ", err)
+	}
+	// retrieve updated user
+	return d.FindById(u.Id)
+}
+
+// CheckUserExists checks if a user exists in the database
+func (d UserRepoDb) checkUserExists(id int64) (bool, error) {
+	row := d.db.QueryRow(sqlCheckUserExists, id)
+
+	var u User
+	err := row.Scan(&u.Id)
+	if err == sql.ErrNoRows {
+		return false, err
+	}
+	if err != nil {
+		return false, err
+	}
+	return true, nil
 }
