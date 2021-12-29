@@ -5,6 +5,7 @@ import (
 	"github.com/ashtishad/bookstore/users-api/internal/dto"
 	"github.com/ashtishad/bookstore/users-api/pkg/services"
 	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
 )
 
@@ -16,6 +17,7 @@ type UserHandlers struct {
 func (u UserHandlers) GetById(c *gin.Context) {
 	id, err := getUserId(c.Param("id"))
 	if err != nil {
+		log.Printf("Error while getting user id : %v", err)
 		c.JSON(err.AsStatus(), err)
 		return
 	}
@@ -33,6 +35,7 @@ func (u UserHandlers) Create(c *gin.Context) {
 	var req dto.UserRequest
 
 	if err := c.ShouldBindJSON(&req); err != nil {
+		log.Printf("Error while binding request: %v", err.Error())
 		restErr := lib.NewBadRequestError("invalid json body")
 		c.JSON(restErr.AsStatus(), restErr)
 		return
@@ -40,6 +43,7 @@ func (u UserHandlers) Create(c *gin.Context) {
 
 	result, saveErr := u.Service.Create(req)
 	if saveErr != nil {
+		log.Printf("Error while creating user: %v", saveErr)
 		c.JSON(saveErr.AsStatus(), saveErr)
 		return
 	}
@@ -50,6 +54,7 @@ func (u UserHandlers) Create(c *gin.Context) {
 func (u UserHandlers) Update(c *gin.Context) {
 	id, err := getUserId(c.Param("id"))
 	if err != nil {
+		log.Printf("Error while getting user id: %v", err)
 		c.JSON(err.AsStatus(), err)
 		return
 	}
@@ -58,6 +63,7 @@ func (u UserHandlers) Update(c *gin.Context) {
 	req.SetId(id)
 
 	if err := c.ShouldBindJSON(&req); err != nil {
+		log.Printf("Error while binding request: %v", err.Error())
 		restErr := lib.NewBadRequestError("invalid json body")
 		c.JSON(restErr.AsStatus(), restErr)
 		return
@@ -66,6 +72,7 @@ func (u UserHandlers) Update(c *gin.Context) {
 	result, saveErr := u.Service.Update(req)
 
 	if saveErr != nil {
+		log.Printf("Error while updating user: %v", saveErr)
 		c.JSON(saveErr.AsStatus(), saveErr)
 		return
 	}
