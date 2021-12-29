@@ -22,10 +22,10 @@ type UserRepository interface {
 	FindById(id int64) (*User, lib.RestErr)
 	Save(User) (*User, lib.RestErr)
 	Update(User) (*User, lib.RestErr)
+	Delete(id int64) lib.RestErr
 
 	//Search(string) (*User, lib.RestErr)
 	//FindAll() ([]*User, lib.RestErr)
-	//Delete(id int64) lib.RestErr
 }
 
 // CREATE : User -> DTO , vice versa transformation

@@ -11,6 +11,7 @@ type UserService interface {
 	GetById(id int64) (*dto.UserResponse, lib.RestErr)
 	Create(req dto.UserRequest) (*dto.UserResponse, lib.RestErr)
 	Update(req dto.UserUpdateRequest) (*dto.UserResponse, lib.RestErr)
+	Delete(id int64) lib.RestErr
 }
 
 type DefaultUserService struct {
@@ -61,4 +62,12 @@ func (s DefaultUserService) Update(req dto.UserUpdateRequest) (*dto.UserResponse
 	resp := usr.ToUserRespDTO()
 
 	return &resp, nil
+}
+
+func (s DefaultUserService) Delete(id int64) lib.RestErr {
+	if err := s.repo.Delete(id); err != nil {
+		return err
+	}
+
+	return nil
 }
