@@ -1,9 +1,16 @@
 package app
 
-func getRouteMappings() {
-	//r.GET("/users", getUsers)
-	//r.GET("/users/:id", getUser)
-	//r.POST("/users", createUser)
-	//r.PUT("/users/:id", updateUser)
-	//r.DELETE("/users/:id", deleteUser)
+import (
+	"github.com/ashtishad/bookstore/users-api/internal/handlers"
+	"github.com/gin-gonic/gin"
+)
+
+func getRouteMappings(uh handlers.UserHandlers, r *gin.Engine) {
+	r.GET("/users/:id", uh.GetById)
+	r.POST("/users", uh.Create)
+	r.PUT("/users/:id", uh.Update)
+
+	r.DELETE("/users/:id", uh.Delete)
+	r.GET("/users", uh.GetAll)
+	r.GET("/users/search", uh.Search)
 }

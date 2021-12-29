@@ -1,42 +1,82 @@
 package lib
 
 import (
+	"fmt"
 	"net/http"
 )
 
-type AppError struct {
-	Message string `json:"message"`
-	Code    int    `json:"statusCode,omitempty"`
+type RestErr interface {
+	AsMessage() string
+	AsStatus() int
+	AsCauses() []interface{}
 }
 
-func (e *AppError) AsMessage() string {
+type restErr struct {
+	Message string        `json:"message"`
+	Status  int           `json:"status"`
+	Causes  []interface{} `json:"causes"`
+}
+
+func (e restErr) Error() string {
+	return fmt.Sprintf("message: %s - status: %d - causes: %v",
+		e.Message, e.Status, e.Causes)
+}
+
+func (e restErr) AsMessage() string {
 	return e.Message
 }
 
-func NewNotFoundError(m string) *AppError {
-	return &AppError{
-		Message: m,
-		Code:    http.StatusNotFound,
-	}
+func (e restErr) AsStatus() int {
+	return e.Status
 }
 
-func NewUnexpectedError(m string) *AppError {
-	return &AppError{
-		Message: m,
-		Code:    http.StatusInternalServerError,
-	}
+func (e restErr) AsCauses() []interface{} {
+	return e.Causes
 }
 
-func NewInternalServerError(m string) *AppError {
-	return &AppError{
-		Message: m,
-		Code:    http.StatusInternalServerError,
-	}
-}
-
-func NewValidationError(message string) *AppError {
-	return &AppError{
+func NewRestError(message string, status int, causes []interface{}) RestErr {
+	return restErr{
 		Message: message,
-		Code:    http.StatusUnprocessableEntity,
+		Status:  status,
+		Causes:  causes,
 	}
+}
+
+func NewBadRequestError(message string) RestErr {
+	return restErr{
+		Message: message,
+		Status:  http.StatusBadRequest,
+	}
+}
+
+func NewNotFoundError(message string) RestErr {
+	return restErr{
+		Message: message,
+		Status:  http.StatusNotFound,
+	}
+}
+
+func NewUnauthorizedError(message string) RestErr {
+	return restErr{
+		Message: message,
+		Status:  http.StatusUnauthorized,
+	}
+}
+
+func NewUnexpectedError(message string) RestErr {
+	return restErr{
+		Message: message,
+		Status:  http.StatusInternalServerError,
+	}
+}
+
+func NewInternalServerError(message string, err error) RestErr {
+	result := restErr{
+		Message: message,
+		Status:  http.StatusInternalServerError,
+	}
+	if err != nil {
+		result.Causes = append(result.Causes, err.Error())
+	}
+	return result
 }
