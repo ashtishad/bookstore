@@ -3,6 +3,7 @@ package domain
 import (
 	"github.com/ashtishad/bookstore/lib"
 	"github.com/ashtishad/bookstore/users-api/internal/dto"
+	"time"
 )
 
 type User struct {
@@ -19,11 +20,11 @@ type User struct {
 // UserRepository is the interface that wraps the basic CRUD functions
 type UserRepository interface {
 	FindById(id int64) (*User, lib.RestErr)
+	Save(User) (*User, lib.RestErr)
 
-	//Create(user *UserResponse) (*UserResponse, lib.RestErr)
-	//Search(name string) (*UserResponse, lib.RestErr)
-	//FindAll() ([]*UserResponse, lib.RestErr)
-	//Update(user *UserResponse) (*UserResponse, lib.RestErr)
+	//Search(name string) (*User, lib.RestErr)
+	//FindAll() ([]*User, lib.RestErr)
+	//Update(user *User) (*UserResponse, lib.RestErr)
 	//Delete(id int64) lib.RestErr
 }
 
@@ -37,5 +38,17 @@ func (u User) ToUserRespDTO() dto.UserResponse {
 		City:        u.City,
 		DateCreated: u.DateCreated,
 		Status:      u.Status,
+	}
+}
+
+func NewUser(req dto.UserRequest) User {
+	return User{
+		Name:        req.Name,
+		Gender:      req.Gender,
+		DateOfBirth: req.DateOfBirth,
+		Email:       req.Email,
+		City:        req.City,
+		DateCreated: time.Now().Format(lib.DbDateLayout),
+		Status:      1,
 	}
 }

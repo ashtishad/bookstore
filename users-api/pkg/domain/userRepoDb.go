@@ -7,9 +7,8 @@ import (
 )
 
 const (
-	sqlGetUser = `SELECT id, name, gender,date_of_birth, email,city, date_created, status 
-	FROM users 
-	WHERE id=$1;`
+	sqlGetUser    = `SELECT id, name, gender,date_of_birth, email,city, date_created, status FROM users WHERE id=$1;`
+	sqlInsertUser = `INSERT INTO users(name, gender, date_of_birth, email, city) VALUES($1, $2, $3, $4, $5) RETURNING id;`
 )
 
 type UserRepoDb struct {
@@ -38,5 +37,20 @@ func (d UserRepoDb) FindById(id int64) (*User, lib.RestErr) {
 		return nil, lib.NewUnexpectedError("Unexpected database error")
 	}
 
+	return &u, nil
+}
+
+// Save inserts a user into the database
+func (d UserRepoDb) Save(u User) (*User, lib.RestErr) {
+	log.Println("Inserting user :", u)
+
+	var id int64
+	err := d.db.QueryRow(sqlInsertUser, u.Name, u.Gender, u.DateOfBirth, u.Email, u.City).Scan(&id)
+	if err != nil {
+		return nil, lib.NewInternalServerError("Could not insert id : ", err)
+	}
+	log.Println("New user id is:", id)
+
+	u.Id = id
 	return &u, nil
 }

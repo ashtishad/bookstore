@@ -9,6 +9,7 @@ import (
 // UserService is our PRIMARY PORT
 type UserService interface {
 	GetById(id int64) (*dto.UserResponse, lib.RestErr)
+	Create(req dto.UserRequest) (*dto.UserResponse, lib.RestErr)
 }
 
 type DefaultUserService struct {
@@ -27,6 +28,23 @@ func (s DefaultUserService) GetById(id int64) (*dto.UserResponse, lib.RestErr) {
 	}
 
 	resp := u.ToUserRespDTO()
+
+	return &resp, nil
+}
+
+func (s DefaultUserService) Create(req dto.UserRequest) (*dto.UserResponse, lib.RestErr) {
+	//if err := req.Validate(); err != nil {
+	//	return nil, err
+	//}
+
+	u := domain.NewUser(req)
+
+	usr, err := s.repo.Save(u)
+	if err != nil {
+		return nil, err
+	}
+
+	resp := usr.ToUserRespDTO()
 
 	return &resp, nil
 }

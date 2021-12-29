@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"github.com/ashtishad/bookstore/lib"
+	"github.com/ashtishad/bookstore/users-api/internal/dto"
 	"github.com/ashtishad/bookstore/users-api/pkg/services"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -42,9 +44,20 @@ func (u UserHandlers) Search(c *gin.Context) {
 
 // Create a new user
 func (u UserHandlers) Create(c *gin.Context) {
-	c.JSON(http.StatusNotImplemented, gin.H{
-		"message": "create",
-	})
+	var req dto.UserRequest
+
+	if err := c.ShouldBindJSON(&req); err != nil {
+		restErr := lib.NewBadRequestError("invalid json body")
+		c.JSON(restErr.AsStatus(), restErr)
+		return
+	}
+
+	result, saveErr := u.Service.Create(req)
+	if saveErr != nil {
+		c.JSON(saveErr.AsStatus(), saveErr)
+		return
+	}
+	c.JSON(http.StatusCreated, result)
 }
 
 // Update an existing user
