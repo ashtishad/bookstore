@@ -8,3 +8,5 @@ CREATE TABLE "users" (
                     "date_created" timestamp NOT NULL DEFAULT 'now()',
                     "status" SMALLINT NOT NULL DEFAULT 1
 );
+
+ALTER SEQUENCE users_id_seq RESTART WITH 1002;
