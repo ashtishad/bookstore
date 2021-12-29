@@ -11,6 +11,7 @@ const (
 	sqlInsertUser      = `INSERT INTO users(name, gender, date_of_birth, email, city) VALUES($1, $2, $3, $4, $5) RETURNING id;`
 	sqlUpdateUser      = `UPDATE users SET name=$1, email=$2, city=$3 ,status=$4 WHERE id=$5;`
 	sqlCheckUserExists = `SELECT id FROM users WHERE id=$1;`
+	sqlDeleteUser      = `DELETE FROM users WHERE id=$1;`
 )
 
 type UserRepoDb struct {
@@ -70,6 +71,20 @@ func (d UserRepoDb) Update(u User) (*User, lib.RestErr) {
 	}
 	// retrieve updated user
 	return d.FindById(u.Id)
+}
+
+// Delete deletes a user from the database
+func (d UserRepoDb) Delete(id int64) lib.RestErr {
+	// check user exists
+	if check, err := d.checkUserExists(id); check == false {
+		return lib.NewInternalServerError("user not found in database,can't delete.", err)
+	}
+
+	_, err := d.db.Exec(sqlDeleteUser, id)
+	if err != nil {
+		return lib.NewInternalServerError("Could not delete user : ", err)
+	}
+	return nil
 }
 
 // CheckUserExists checks if a user exists in the database

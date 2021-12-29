@@ -79,11 +79,19 @@ func (u UserHandlers) Update(c *gin.Context) {
 	c.JSON(http.StatusCreated, result)
 }
 
-// TODO: Delete an existing user
+// Delete an existing user
 func (u UserHandlers) Delete(c *gin.Context) {
-	c.JSON(http.StatusNotImplemented, gin.H{
-		"message": "delete",
-	})
+	userId, idErr := getUserId(c.Param("id"))
+	if idErr != nil {
+		c.JSON(idErr.AsStatus(), idErr)
+		return
+	}
+
+	if err := u.Service.Delete(userId); err != nil {
+		c.JSON(err.AsStatus(), err)
+		return
+	}
+	c.JSON(http.StatusOK, map[string]string{"status": "deleted"})
 }
 
 // TODO: GetAll returns all users, paginated
