@@ -22,9 +22,9 @@ type UserRepository interface {
 	FindById(id int64) (*User, lib.RestErr)
 	Save(User) (*User, lib.RestErr)
 
-	//Search(name string) (*User, lib.RestErr)
+	//Search(string) (*User, lib.RestErr)
 	//FindAll() ([]*User, lib.RestErr)
-	//Update(user *User) (*UserResponse, lib.RestErr)
+	//Update(bool, User) (*User, lib.RestErr)
 	//Delete(id int64) lib.RestErr
 }
 

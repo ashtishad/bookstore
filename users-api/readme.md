@@ -30,6 +30,7 @@
 
     1. JSON (REST)
     2. CSV  (Database Bulk Import)
+    3. DTO  (User Level Data Transfer)
 
 ### Data Model
     users:

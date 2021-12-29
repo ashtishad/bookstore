@@ -28,20 +28,6 @@ func (u UserHandlers) GetById(c *gin.Context) {
 	c.JSON(http.StatusOK, user)
 }
 
-// GetAll returns all users, paginated
-func (u UserHandlers) GetAll(c *gin.Context) {
-	c.JSON(http.StatusNotImplemented, gin.H{
-		"message": "get all",
-	})
-}
-
-// Search users by name, paginated
-func (u UserHandlers) Search(c *gin.Context) {
-	c.JSON(http.StatusNotImplemented, gin.H{
-		"message": "search",
-	})
-}
-
 // Create a new user
 func (u UserHandlers) Create(c *gin.Context) {
 	var req dto.UserRequest
@@ -60,16 +46,30 @@ func (u UserHandlers) Create(c *gin.Context) {
 	c.JSON(http.StatusCreated, result)
 }
 
-// Update an existing user
+// TODO: Update an existing user
 func (u UserHandlers) Update(c *gin.Context) {
 	c.JSON(http.StatusNotImplemented, gin.H{
 		"message": "update",
 	})
 }
 
-// Delete an existing user
+// TODO: Delete an existing user
 func (u UserHandlers) Delete(c *gin.Context) {
 	c.JSON(http.StatusNotImplemented, gin.H{
 		"message": "delete",
+	})
+}
+
+// TODO: GetAll returns all users, paginated
+func (u UserHandlers) GetAll(c *gin.Context) {
+	c.JSON(http.StatusNotImplemented, gin.H{
+		"message": "get all",
+	})
+}
+
+// TODO: Search users by name, paginated
+func (u UserHandlers) Search(c *gin.Context) {
+	c.JSON(http.StatusNotImplemented, gin.H{
+		"message": "search",
 	})
 }
