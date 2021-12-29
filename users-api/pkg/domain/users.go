@@ -62,6 +62,6 @@ func NewUpdateUser(req dto.UserUpdateRequest) User {
 		Name:   req.Name,
 		Email:  req.Email,
 		City:   req.City,
-		Status: req.Status,
+		Status: *req.Status,
 	}
 }

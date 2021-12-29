@@ -13,7 +13,7 @@ type UserUpdateRequest struct {
 	Name   string `json:"name" db:"name" binding:"required"`
 	Email  string `json:"email" db:"email" binding:"required,email"`
 	City   string `json:"city" db:"city" binding:"required"`
-	Status int8   `json:"status" db:"status" binding:"required"`
+	Status *int8  `json:"status" db:"status" binding:"required,oneof=0 1"`
 }
 
 func (uu *UserUpdateRequest) SetId(id int64) {
