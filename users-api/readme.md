@@ -3,7 +3,7 @@
 ### Routes
 
     * GetUserById           GET     /users/:id
-    * SearchUsers           GET     /users/search
+    * SearchByName          GET     /users/search
     * CreateUser            POST    /users
     * UpdateUser            PUT     /users/:id
     * DeleteUser            DELETE  /users/:id
@@ -31,6 +31,12 @@
     1. JSON (REST)
     2. CSV  (Database Bulk Import)
     3. DTO  (User Level Data Transfer)
+
+### Data Flow
+
+    Incoming : Client --(JSON)-> REST Handlers --(DTO)-> Service --(Struct)-> RepositoryDB
+
+    Outgoing : RepositoryDB --(Struct)-> Service --(DTO)-> REST Handlers --(JSON)-> Client
 
 ### Data Model
     users:

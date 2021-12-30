@@ -2,10 +2,10 @@ package app
 
 import (
 	"github.com/ashtishad/bookstore/lib"
-	"github.com/ashtishad/bookstore/users-api/internal/data"
-	"github.com/ashtishad/bookstore/users-api/internal/handlers"
-	"github.com/ashtishad/bookstore/users-api/pkg/domain"
-	"github.com/ashtishad/bookstore/users-api/pkg/services"
+	"github.com/ashtishad/bookstore/users-api/db/conn"
+	"github.com/ashtishad/bookstore/users-api/internal/domain"
+	"github.com/ashtishad/bookstore/users-api/internal/rest"
+	"github.com/ashtishad/bookstore/users-api/internal/services"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
@@ -17,7 +17,7 @@ func Start() {
 	var r = gin.New()
 
 	// db connection pool config
-	db := data.GetDbClient()
+	db := conn.GetDbClient()
 	defer func() {
 		_ = db.Close()
 		log.Println("DB connection pool closed")
@@ -25,7 +25,7 @@ func Start() {
 	userDbConn := domain.NewUserRepoDb(db)
 
 	// wire up handlers
-	uh := handlers.UserHandlers{Service: services.NewUserService(userDbConn)}
+	uh := rest.UserHandlers{Service: services.NewUserService(userDbConn)}
 
 	// Server Config
 	srv := &http.Server{
