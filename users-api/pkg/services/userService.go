@@ -12,6 +12,7 @@ type UserService interface {
 	Create(req dto.UserRequest) (*dto.UserResponse, lib.RestErr)
 	Update(req dto.UserUpdateRequest) (*dto.UserResponse, lib.RestErr)
 	Delete(id int64) lib.RestErr
+	SearchByName(name string) (*[]dto.UserSearchResponse, lib.RestErr)
 }
 
 type DefaultUserService struct {
@@ -70,4 +71,19 @@ func (s DefaultUserService) Delete(id int64) lib.RestErr {
 	}
 
 	return nil
+}
+
+// SearchByName searches users by name
+func (s DefaultUserService) SearchByName(name string) (*[]dto.UserSearchResponse, lib.RestErr) {
+	users, err := s.repo.FindByName(name)
+	if err != nil {
+		return nil, err
+	}
+
+	resp := make([]dto.UserSearchResponse, len(*users))
+	for i, user := range *users {
+		resp[i] = user.ToUserSearchRespDTO()
+	}
+
+	return &resp, nil
 }
