@@ -1,9 +1,9 @@
-package handlers
+package rest
 
 import (
 	"github.com/ashtishad/bookstore/lib"
 	"github.com/ashtishad/bookstore/users-api/internal/dto"
-	"github.com/ashtishad/bookstore/users-api/pkg/services"
+	"github.com/ashtishad/bookstore/users-api/internal/services"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"

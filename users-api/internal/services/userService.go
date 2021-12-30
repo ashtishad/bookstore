@@ -2,8 +2,8 @@ package services
 
 import (
 	"github.com/ashtishad/bookstore/lib"
+	"github.com/ashtishad/bookstore/users-api/internal/domain"
 	"github.com/ashtishad/bookstore/users-api/internal/dto"
-	"github.com/ashtishad/bookstore/users-api/pkg/domain"
 )
 
 // UserService is our PRIMARY PORT

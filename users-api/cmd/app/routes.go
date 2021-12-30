@@ -1,11 +1,11 @@
 package app
 
 import (
-	"github.com/ashtishad/bookstore/users-api/internal/handlers"
+	"github.com/ashtishad/bookstore/users-api/internal/rest"
 	"github.com/gin-gonic/gin"
 )
 
-func getRouteMappings(uh handlers.UserHandlers, r *gin.Engine) {
+func getRouteMappings(uh rest.UserHandlers, r *gin.Engine) {
 	r.GET("/users/:id", uh.GetById)
 	r.POST("/users", uh.Create)
 	r.PUT("/users/:id", uh.Update)

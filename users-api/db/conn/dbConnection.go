@@ -1,4 +1,4 @@
-package data
+package conn
 
 import (
 	"database/sql"
