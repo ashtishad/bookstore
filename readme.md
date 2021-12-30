@@ -1,9 +1,9 @@
-# Users Microservice API
+## Users API
 
 ### Routes
 
     * GetUserById           GET     /users/:id
-    * SearchUsers           GET     /users/search
+    * SearchByName          GET     /users/search
     * CreateUser            POST    /users
     * UpdateUser            PUT     /users/:id
     * DeleteUser            DELETE  /users/:id
@@ -32,6 +32,12 @@
     2. CSV  (Database Bulk Import)
     3. DTO  (User Level Data Transfer)
 
+### Data Flow
+
+    Incoming : Client --(JSON)-> REST Handlers --(DTO)-> Service --(Domain Object)-> RepositoryDB
+
+    Outgoing : RepositoryDB --(Domain Object)-> Service --(DTO)-> REST Handlers --(JSON)-> Client
+
 ### Data Model
     users:
         * id            bigserial,pk
@@ -42,3 +48,6 @@
         * city          varchar
         * created_at    varchar
         * status        smallint
+
+
+[Project status : Ongoing]

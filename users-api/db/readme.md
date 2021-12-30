@@ -1,7 +1,7 @@
-## DB Package
+## db package
 
 
-### What's Inside?
+### Contains
 
     * conn          -> handles database connection configs.(eg: postgres driver and config)
     * seed          -> seed data for the database.(eg: users.csv)

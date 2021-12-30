@@ -1,8 +1,8 @@
-## Internal Package
+## internal package
 **_defines the core domain_**
 
 
-### What's Inside?
+### Contains
 
     * domain        -> Entity and Repository
     * Services      -> Core services (e.g. UserService)
@@ -10,8 +10,8 @@
     * dto           -> Request and Response DTOs (e.g. UserDTO)
     * middleware    -> Core http middleware (e.g. AuthMiddleware)
 
-### Data flow?
+### Data Flow
 
-**Incoming** : Client --(JSON)-> REST Handlers --(DTO)-> Service --(Struct)-> RepositoryDB
+    Incoming : Client --(JSON)-> REST Handlers --(DTO)-> Service --(Domain Object)-> RepositoryDB
 
-**Outgoing** : RepositoryDB --(Struct)-> Service --(DTO)-> REST Handlers --(JSON)-> Client
+    Outgoing : RepositoryDB --(Domain Object)-> Service --(DTO)-> REST Handlers --(JSON)-> Client

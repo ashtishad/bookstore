@@ -1,8 +1,8 @@
-## CMD Package
+## cmd package
 _place for all server files and binaries_
 
 
-### What's Inside?
+### Contains
 
     * app          -> uses primary database.
     * replica      -> uses readonly database.

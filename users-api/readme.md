@@ -1,4 +1,4 @@
-# Users Microservice API
+## Users API
 
 ### Routes
 
@@ -34,9 +34,9 @@
 
 ### Data Flow
 
-    Incoming : Client --(JSON)-> REST Handlers --(DTO)-> Service --(Struct)-> RepositoryDB
+    Incoming : Client --(JSON)-> REST Handlers --(DTO)-> Service --(Domain Object)-> RepositoryDB
 
-    Outgoing : RepositoryDB --(Struct)-> Service --(DTO)-> REST Handlers --(JSON)-> Client
+    Outgoing : RepositoryDB --(Domain Object)-> Service --(DTO)-> REST Handlers --(JSON)-> Client
 
 ### Data Model
     users:
