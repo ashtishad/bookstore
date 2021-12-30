@@ -94,16 +94,27 @@ func (u UserHandlers) Delete(c *gin.Context) {
 	c.JSON(http.StatusOK, map[string]string{"status": "deleted"})
 }
 
+// Search users by name
+func (u UserHandlers) Search(c *gin.Context) {
+	name := c.Query("name")
+	if len(name) == 0 {
+		restErr := lib.NewBadRequestError("name is missing")
+		c.JSON(restErr.AsStatus(), restErr)
+		return
+	}
+
+	users, err := u.Service.SearchByName(name)
+	if err != nil {
+		log.Printf("Error while searching users: %v", err)
+		c.JSON(err.AsStatus(), err)
+		return
+	}
+	c.JSON(http.StatusOK, users)
+}
+
 // TODO: GetAll returns all users, paginated
 func (u UserHandlers) GetAll(c *gin.Context) {
 	c.JSON(http.StatusNotImplemented, gin.H{
 		"message": "get all",
-	})
-}
-
-// TODO: Search users by name, paginated
-func (u UserHandlers) Search(c *gin.Context) {
-	c.JSON(http.StatusNotImplemented, gin.H{
-		"message": "search",
 	})
 }

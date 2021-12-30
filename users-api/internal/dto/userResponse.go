@@ -10,3 +10,11 @@ type UserResponse struct {
 	DateCreated string `json:"date_created"`
 	Status      int8   `json:"status"`
 }
+
+type UserSearchResponse struct {
+	Id          int64  `json:"id"`
+	Name        string `json:"name"`
+	Email       string `json:"email"`
+	DateCreated string `json:"date_created"`
+	Status      int8   `json:"status"`
+}
