@@ -23,8 +23,8 @@ type UserRepository interface {
 	Save(User) (*User, lib.RestErr)
 	Update(User) (*User, lib.RestErr)
 	Delete(id int64) lib.RestErr
+	FindByName(name string) (*[]User, lib.RestErr)
 
-	//Search(string) (*User, lib.RestErr)
 	//FindAll() ([]*User, lib.RestErr)
 }
 
@@ -63,5 +63,16 @@ func NewUpdateUser(req dto.UserUpdateRequest) User {
 		Email:  req.Email,
 		City:   req.City,
 		Status: *req.Status,
+	}
+}
+
+// ToUserSearchRespDTO is used to transform the User to UserSearchResponse
+func (u User) ToUserSearchRespDTO() dto.UserSearchResponse {
+	return dto.UserSearchResponse{
+		Id:          u.Id,
+		Name:        u.Name,
+		Email:       u.Email,
+		DateCreated: u.DateCreated,
+		Status:      u.Status,
 	}
 }

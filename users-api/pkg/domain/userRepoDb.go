@@ -12,6 +12,7 @@ const (
 	sqlUpdateUser      = `UPDATE users SET name=$1, email=$2, city=$3 ,status=$4 WHERE id=$5;`
 	sqlCheckUserExists = `SELECT id FROM users WHERE id=$1;`
 	sqlDeleteUser      = `DELETE FROM users WHERE id=$1;`
+	sqlSearchUser      = `SELECT id, name, email, date_created, status FROM users WHERE name=$1;`
 )
 
 type UserRepoDb struct {
@@ -85,6 +86,33 @@ func (d UserRepoDb) Delete(id int64) lib.RestErr {
 		return lib.NewInternalServerError("Could not delete user : ", err)
 	}
 	return nil
+}
+
+// FindByName searches by user's full name, multiple records can be found
+func (d UserRepoDb) FindByName(name string) (*[]User, lib.RestErr) {
+	rows, err := d.db.Query(sqlSearchUser, name)
+	if err != nil {
+		return nil, lib.NewInternalServerError("Could not search user : ", err)
+	}
+	defer func(rows *sql.Rows) {
+		err := rows.Close()
+		if err != nil {
+			log.Printf("Error while closing rows : %s", err.Error())
+		}
+	}(rows)
+
+	var users []User
+	for rows.Next() {
+		var u User
+		if err := rows.Scan(&u.Id, &u.Name, &u.Email, &u.DateCreated, &u.Status); err != nil {
+			return nil, lib.NewInternalServerError("Could not scan user : ", err)
+		}
+		users = append(users, u)
+	}
+	if len(users) == 0 {
+		return nil, lib.NewNotFoundError("no user found")
+	}
+	return &users, nil
 }
 
 // CheckUserExists checks if a user exists in the database
