@@ -2,7 +2,7 @@ package app
 
 import (
 	"github.com/ashtishad/bookstore/lib"
-	"github.com/ashtishad/bookstore/users-api/data"
+	"github.com/ashtishad/bookstore/users-api/internal/data"
 	"github.com/ashtishad/bookstore/users-api/internal/handlers"
 	"github.com/ashtishad/bookstore/users-api/pkg/domain"
 	"github.com/ashtishad/bookstore/users-api/pkg/services"
