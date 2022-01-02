@@ -2,7 +2,7 @@
 
 ## Design Decisions
 
- ###1. Database per service pattern
+ 1. Database per service pattern
     * Separate database for each service, one service won't communicate directly to another service's database.
     * Why?
         * Separation of concerns(Each service to run independently).
@@ -12,7 +12,7 @@
         * Easy to scale,test,manage,maintain and audit.
 
 
-###2. How to exchange data between services?
+2. How to exchange data between services?
     * Asynchronous Data Communication(Event Driven).
     * Will use Event Bus to exchange data(eg: Kafka/RabbitMQ/NATS).
     * Why Async Communication?
@@ -22,20 +22,20 @@
     * Downside? - Data duplication.
     
     
-### Libraries/Tools/Frameworks
+## Libraries/Tools/Frameworks
 
     * Gin.
     * Docker
     * Kubernetes.
     * PostgreSQL and MongoDB
 
-### Data Exchange Format
+## Data Exchange Format
 
     1. JSON (REST)
     2. CSV  (Database Bulk Import)
     3. DTO  (User Level Data Transfer)
 
-### Data Flow(Hexagonal Architecture)
+## Data Flow(Hexagonal Architecture)
 
     Incoming : Client --(JSON)-> REST Handlers --(DTO)-> Service --(Domain Object)-> RepositoryDB
 
