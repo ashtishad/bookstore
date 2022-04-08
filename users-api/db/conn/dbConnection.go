@@ -33,11 +33,11 @@ func GetDbClient() *sql.DB {
 
 	db, err := sql.Open("pgx", dsn.String())
 	if err != nil {
-		panic(err)
+		log.Fatalf("error connecting to the database: %v", err)
 	}
 
 	if err = db.Ping(); err != nil {
-		panic(err)
+		log.Fatalf("error pinging the database: %v", err)
 	}
 	log.Printf("successfully connected to database %s", dsn.String())
 

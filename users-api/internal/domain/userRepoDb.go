@@ -31,17 +31,16 @@ func (d UserRepoDb) FindById(id int64) (*User, lib.RestErr) {
 
 	var u User
 	err := row.Scan(&u.Id, &u.Name, &u.Gender, &u.DateOfBirth, &u.Email, &u.City, &u.DateCreated, &u.Status)
-	if err == sql.ErrNoRows {
+	switch err {
+	case sql.ErrNoRows:
 		log.Printf("Error while scanning users by id : %s", err.Error())
 		return nil, lib.NewNotFoundError("user not found in database")
-	}
-	// catch other errors that might occur
-	if err != nil {
+	case nil:
+		return &u, nil
+	default:
 		log.Printf("Error while scanning users by id : %s", err.Error())
-		return nil, lib.NewUnexpectedError("Unexpected database error")
+		return nil, lib.NewInternalServerError("error while scanning user", err)
 	}
-
-	return &u, nil
 }
 
 // Save inserts a user into the database
